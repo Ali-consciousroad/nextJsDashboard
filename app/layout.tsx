@@ -1,3 +1,4 @@
+// Shared root layout (required)
 import '@/app/ui/global.css';
 import { inter } from '@/app/ui/fonts';
 
