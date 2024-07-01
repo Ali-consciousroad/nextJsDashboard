@@ -1,3 +1,5 @@
+// Import sql function. This function allows to query our DB.
+// SQL can be called inside any component but for better readability all the data queries are kept in this file. 
 import { sql } from '@vercel/postgres';
 import {
   CustomerField,
@@ -34,6 +36,10 @@ export async function fetchRevenue() {
 
 export async function fetchLatestInvoices() {
   try {
+    /*
+    We could fetch all invoices and sort through them using JS. But using SQL to fetch only the data 
+    we need means less data needed to be transferred during the request.
+    */
     // Fetch the last 5 invoices sorted by date
     const data = await sql<LatestInvoiceRaw>`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
@@ -55,7 +61,13 @@ export async function fetchLatestInvoices() {
 
 export async function fetchCardData() {
   try {
-    // You can probably combine these into a single SQL query
+    /* We could have fetched all invoices and customers and use JS to manipulate the data. 
+       For example we could use Array.length to get the total number of invoices and customers. */
+
+    // const totalInvoices = allInvoices.length;
+    // const totalCustomers = allCustomers.length; 
+
+    // We can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
     // how to initialize multiple queries in parallel with JS.
     const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;

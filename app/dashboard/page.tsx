@@ -4,7 +4,9 @@ import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
 import { lusitana } from '@/app/ui/fonts';
 import { fetchRevenue, fetchLatestInvoices } from '@/app/lib/data';
  
+// Page is an async component, this allows to use await to fetch data
 export default async function Page() {
+  // Fetch data for the <RevenueChart /> component
   const revenue = await fetchRevenue();
   // Import the fetchLatestInvoices function
   const latestInvoices = await fetchLatestInvoices();
