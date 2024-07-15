@@ -2,16 +2,13 @@ import { Card } from '@/app/ui/dashboard/cards';
 import RevenueChart from '@/app/ui/dashboard/revenue-chart';
 import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
 import { lusitana } from '@/app/ui/fonts';
-import { fetchLatestInvoices, fetchCardData } from '@/app/lib/data';
+import { fetchCardData } from '@/app/lib/data';
 import { Suspense } from 'react';
-import { RevenueChartSkeleton } from '@/app/ui/skeletons';
+import { LatestInvoicesSkeleton, RevenueChartSkeleton } from '@/app/ui/skeletons';
  
 // Page is an async component, this allows to use await to fetch data
 export default async function Page() {
-  // Import the fetchLatestInvoices function
-  const latestInvoices = await fetchLatestInvoices();
   // Import the fetchCardData function and destructure the values returned from the function
-  
   const {
     numberOfInvoices,
     numberOfCustomers,
@@ -35,10 +32,14 @@ export default async function Page() {
         />
       </div>
       <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
+        {/* Stream a specific component instead of all the page using Suspense boundaries 
+        and using a skeleton as a fallback */}
         <Suspense fallback={<RevenueChartSkeleton />}>
           <RevenueChart />
         </Suspense>
-        <LatestInvoices latestInvoices={latestInvoices} />
+        <Suspense fallback={<LatestInvoicesSkeleton />}>
+          <LatestInvoices />
+        </Suspense>
       </div>
     </main>
   );
