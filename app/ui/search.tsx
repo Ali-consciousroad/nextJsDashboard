@@ -2,13 +2,15 @@
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function Search() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  function handleSearch(term: string) {
+  const handleSearch = useDebouncedCallback((term) => {
+    console.log(`Searching... ${term}`);
     /* URLSearchParams is a web API that provides utility methods 
     for simplified URL query parameters manipulation */
     const params = new URLSearchParams(searchParams);
@@ -21,7 +23,8 @@ export default function Search() {
     // ${pathname} is the current path, in this case, "/dashboard/invoices"
     // Updates the URL with the user's search data
     replace(`${pathname}?${params.toString()}`);
-  }
+  }, 500);
+  
   return (
     <div className="relative flex flex-1 flex-shrink-0">
       <label htmlFor="search" className="sr-only">
