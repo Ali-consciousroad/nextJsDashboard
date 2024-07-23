@@ -29,7 +29,10 @@ export default function Search() {
       </label>
       {/* By adding an onChange listener to the <input> element, 
           onChange will invoke handleSearch whenever the input value changes. */}
-      {/* The defaultValue for the input by reading from searchParams will ensur the input field is in sync with the URL and will be populated when sharing */}     
+      {/* The defaultValue for the input by reading from searchParams will ensure 
+      the input field is in sync with the URL and will be populated when sharing, 
+      if we're using state to manage the value of an input, which is currently not the case, we'd use the "value" attribute 
+      to make it a controlled component. */}     
       <input
         className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
         onChange={(e) => {

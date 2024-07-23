@@ -6,6 +6,8 @@ For more information, see the [course curriculum](https://nextjs.org/learn) on t
 
 The tutorial for this project can be found here: https://nextjs.org/learn/dashboard-app
 
+Project deployed using Vercel can be found here: https://nextjs-dashboard-sooty-nu-93.vercel.app/
+
 Start the app:
 
 pnpm dev
