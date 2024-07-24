@@ -14,6 +14,8 @@ export default function Search() {
     /* URLSearchParams is a web API that provides utility methods 
     for simplified URL query parameters manipulation */
     const params = new URLSearchParams(searchParams);
+    // Reset the page number to 1 when the user types a new search query
+    params.set('page', '1');
     // If the input is empty, then delete it
     if (term) {
       params.set('query', term);}
