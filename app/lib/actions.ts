@@ -3,4 +3,14 @@
 For this course, we preferred to keep them all organized in a separate file. */
 'use server';
 
-export async function createInvoice(formData: FormData) {}
+// Extract the data from formData
+export async function createInvoice(formData: FormData) {
+    const rawFormData = {
+        customerId: formData.get('customerId'),
+        amount: formData.get('amount'),
+        status: formData.get('status'),
+    };
+    // Test it out:
+    // Display the form in the terminal after submitting it
+    console.log(rawFormData);
+}
