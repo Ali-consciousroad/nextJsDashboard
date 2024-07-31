@@ -4,6 +4,7 @@ For this course, we preferred to keep them all organized in a separate file. */
 'use server';
 // Import Zod, a TypeScript-first validation library 
 import { z } from 'zod';
+import { sql } from '@vercel/postgres';
 
 /* The schema that matches the form of our object will validate the formData 
 before saving it to the DB. */
@@ -26,5 +27,11 @@ export async function createInvoice(formData: FormData) {
     });
     // Convert the amount into cents
     const amountInCents = amount * 100; 
+    // Create a new date for the invoice's creation date
     const date = new Date().toISOString().split('T')[0];
+
+    await sql`
+        INSERT INTO invoices (customer_id, amount, status, date)
+        VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
+        `;
 }
