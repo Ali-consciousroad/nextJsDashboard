@@ -5,6 +5,8 @@ For this course, we preferred to keep them all organized in a separate file. */
 // Import Zod, a TypeScript-first validation library 
 import { z } from 'zod';
 import { sql } from '@vercel/postgres';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 /* The schema that matches the form of our object will validate the formData 
 before saving it to the DB. */
@@ -30,8 +32,14 @@ export async function createInvoice(formData: FormData) {
     // Create a new date for the invoice's creation date
     const date = new Date().toISOString().split('T')[0];
 
+    // Insert the data into the database
     await sql`
         INSERT INTO invoices (customer_id, amount, status, date)
         VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
         `;
+    /* We're updating the data displayed in the invoices route 
+    so we want to clear this cache and trigger a new request to the server.
+    This is possible thanks to the revalidatePath function from Next.js */
+    revalidatePath('/dashboard/invoices');
+    redirect('/dashboard/invoices');
 }
