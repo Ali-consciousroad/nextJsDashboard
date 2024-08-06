@@ -18,6 +18,8 @@ const FormSchema = z.object({
     date: z.string(),
 });
 
+// Use Zod to update and create the expected types 
+const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 
 // Extract the data from formData
@@ -27,6 +29,7 @@ export async function createInvoice(formData: FormData) {
         amount: formData.get('amount'),
         status: formData.get('status'),
     });
+
     // Convert the amount into cents
     const amountInCents = amount * 100; 
     // Create a new date for the invoice's creation date
@@ -42,4 +45,23 @@ export async function createInvoice(formData: FormData) {
     This is possible thanks to the revalidatePath function from Next.js */
     revalidatePath('/dashboard/invoices');
     redirect('/dashboard/invoices');
+}
+
+// Steps are similar to the createInvoice action 
+export async function updateInvoice(id: string, formData: FormData) {
+    const { customerId, amount, status } = UpdateInvoice.parse({
+        customerId: formData.get('customerId)'),
+        amount: formData.get('amount'),
+        status: formData.get('status'),
+    });
+
+    const amountInCents = amount * 100;
+     await sql `
+        UPDATE invoices
+        SET customer_id = ${customerId}, amoount = ${amountInCents}, status = ${status}
+        WHERE id = ${id}
+     `;
+
+     revalidatePath('/dashboard/invoices');
+     redirect('dashboard/invoices');
 }
