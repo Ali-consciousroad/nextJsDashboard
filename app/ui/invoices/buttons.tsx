@@ -1,3 +1,4 @@
+import { deleteInvoice } from '@/app/lib/actions';
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
@@ -24,13 +25,18 @@ export function UpdateInvoice({ id }: { id: string }) {
   );
 }
 
-export function DeleteInvoice({ id }: { id: string }) {
+/* Wrap the delete button in a <form> element 
+and pass the id to the Server Action using bind 
+to delete an invoice using a Server Action. */
+export function DeleteInvoice({ id }: { id: string}) {
+  const deleteInvoiceWithId = deleteInvoice.bind(null, id);
+
   return (
-    <>
+    <form action={deleteInvoiceWithId}>
       <button className="rounded-md border p-2 hover:bg-gray-100">
         <span className="sr-only">Delete</span>
         <TrashIcon className="w-5" />
       </button>
-    </>
+    </form>
   );
 }
