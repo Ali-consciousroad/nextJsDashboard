@@ -53,6 +53,8 @@ export async function createInvoice(formData: FormData) {
     so we want to clear this cache and trigger a new request to the server.
     This is possible thanks to the revalidatePath function from Next.js */
     revalidatePath('/dashboard/invoices');
+    /* We need to keep the redirect() function outside of the try/catch block.
+    This is because " redirect " works by throwing an error which would be caught by the catch block. */  
     redirect('/dashboard/invoices');
 }
 
@@ -82,7 +84,7 @@ export async function updateInvoice(id: string, formData: FormData) {
 
   export async function deleteInvoice(id: string) {
     // TEST: Throw an error when an invoice is deleted.
-    // throw new Error('Failed to Delete Invoice');
+    throw new Error('Failed to Delete Invoice');
     // Unreachable code block
     try{
       await sql`DELETE FROM invoices WHERE id = ${id}`;

@@ -15,7 +15,7 @@ import { formatCurrency } from './utils';
 export async function fetchRevenue() {
   // Add noStore() here to prevent the response from being cached.
   // This is equivalent to in fetch(..., {cache: 'no-store'}).
-
+  noStore();
   // The dashboard application we are building is dynamic (dynamic rendering)
   // With this test simulating a slow data fetch with dynamic rendering, 
   // we notice our app is only as fast as our slowest data fetch. 
