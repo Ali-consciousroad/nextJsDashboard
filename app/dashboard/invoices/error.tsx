@@ -1,13 +1,14 @@
 /* The errror.tsx define a UI boundary for a route segment.
-It serves as a catch-all for unexpected errors and allows you to display a fallback UI to your users. 
+It serves as a catch-all for unexpected errors and allows you 
+to display a fallback UI to your users. 
 */
 
 // error.tsx needs to be a Client Component
-// It accepts two props: " error " and " reset ".
 'use client'; 
  
 import { useEffect } from 'react';
  
+// It accepts two props: " error " and " reset ".
 export default function Error({
   error,
   reset,
