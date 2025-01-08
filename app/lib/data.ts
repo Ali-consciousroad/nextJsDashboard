@@ -1,4 +1,4 @@
-// Import sql function. This function allows to query our DB.
+// Import sql function from @vercel/postgres, this function allows to query our DB.
 // SQL can be called inside any component but for better readability all the data queries are kept in this file. 
 import { sql } from '@vercel/postgres';
 import {

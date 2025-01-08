@@ -1,3 +1,4 @@
+/* The script uses SQL to create the tables, adn the data from placeholder-data.ts file to populate them after they've been created. */ 
 const { db } = require('@vercel/postgres');
 const {
   invoices,

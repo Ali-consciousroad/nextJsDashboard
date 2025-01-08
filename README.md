@@ -8,6 +8,8 @@ The tutorial for this project can be found here: https://nextjs.org/learn/dashbo
 
 Project deployed using Vercel can be found here: https://nextjs-dashboard-sooty-nu-93.vercel.app/
 
+The clsx library about conditional styling: https://github.com/lukeed/clsx
+
 Start the app:
 
 pnpm dev

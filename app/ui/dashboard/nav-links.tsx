@@ -1,3 +1,4 @@
+// Turn the file into a client component
 'use client'
 
 import {
@@ -6,6 +7,8 @@ import {
   DocumentDuplicateIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+/* The usePAthname() hook is a React hook that can only be used in client components
+because it relies on client-side features like the browser's history API. */
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 
@@ -31,6 +34,7 @@ export default function NavLinks() {
           <Link
             key={link.name}
             href={link.href}
+            // Conditionally apply class names when the link is active.
             className={clsx(
             "flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3",
             {

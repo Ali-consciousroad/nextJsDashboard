@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 export default function InvoiceStatus({ status }: { status: string }) {
   return (
-    // Toggle class names using clsx
+    // Toggle class names using the clsx library for conditional style elements
     <span
       className={clsx(
         'inline-flex items-center rounded-full px-2 py-1 text-xs',

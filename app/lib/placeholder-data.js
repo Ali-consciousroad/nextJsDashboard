@@ -1,4 +1,5 @@
 // This file contains placeholder data that you'll be replacing with real data in the Data Fetching chapter:
+// This data will be later used to seed the DB.
 // https://nextjs.org/learn/dashboard-app/fetching-data
 const users = [
   {
