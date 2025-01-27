@@ -2,12 +2,34 @@
 /* Server Actions could have been written directly inside Server Components by adding "use server" inside the action.
 but for this course, we preferred to keep them all organized in a separate file. */
 'use server';
+
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
 // Import Zod, a TypeScript-first validation library 
 import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+        }
+      }
+      throw error;
+    }
+  }
+  
 /* The schema that matches the form of our object will validate the formData 
 before saving it to the DB. */
 const FormSchema = z.object({
