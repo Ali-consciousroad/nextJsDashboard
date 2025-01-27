@@ -1,3 +1,5 @@
+/* notFound will take precedence over error.tsx, 
+so we can reach out for it when we want to handle more specific errors! */
 import Link from 'next/link';
 import { FaceFrownIcon } from '@heroicons/react/24/outline';
  

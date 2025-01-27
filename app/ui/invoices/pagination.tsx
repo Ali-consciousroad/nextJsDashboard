@@ -1,4 +1,5 @@
 // Client component
+// This means we can use event listeners and hooks
 /* As we work with a client component, we don't want to fetch dagta on the client as this would expose your database secrets (we are not using an API layer).
 Instead, we can fetch the data on the server, and pass it to the component as a prop. */
 'use client';
@@ -20,7 +21,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
     const params = new URLSearchParams(searchParams);
     params.set('page', pageNumber.toString());
     return `${pathname}?${params.toString()}`;
-  }
+  };
 
   const allPages = generatePagination(currentPage, totalPages);
 

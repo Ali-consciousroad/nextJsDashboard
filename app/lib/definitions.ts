@@ -19,9 +19,9 @@ export type Customer = {
 };
 
 export type Invoice = {
-  id: string;
+  id: string; // Will be created on the DB
   customer_id: string;
-  amount: number;
+  amount: number; // Stored in cents, unless we use a type validation library like Zod 
   date: string;
   // In TypeScript, this is called a string union type.
   // It means that the "status" property can only be one of the two strings: 'pending' or 'paid'.

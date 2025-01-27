@@ -1,6 +1,6 @@
-// Mark all the exported functions within the file as Server Actions.
+// " use server " marks all the exported functions within the file as Server Actions.
 /* Server Actions could have been written directly inside Server Components by adding "use server" inside the action.
-For this course, we preferred to keep them all organized in a separate file. */
+but for this course, we preferred to keep them all organized in a separate file. */
 'use server';
 // Import Zod, a TypeScript-first validation library 
 import { z } from 'zod';
@@ -12,9 +12,15 @@ import { redirect } from 'next/navigation';
 before saving it to the DB. */
 const FormSchema = z.object({
     id: z.string(),
-    customerId: z.string(),
-    amount: z.coerce.number(), // The amount field is set to coerce (change) from a string to a number while also validating its type
-    status: z.enum(['pending', 'paid']),
+    customerId: z.string({
+      invalid_type_error: 'Please select a customer.',
+    }),
+    amount: z.coerce
+      .number() // The amount field is set to coerce (change) from a string to a number while also validating its type
+      .gt(0, { message: 'Please enter an amount greater than $0.'}),
+    status: z.enum(['pending', 'paid'], {
+      invalid_type_error: 'Please select an invoice status.',
+    }),
     date: z.string(),
 });
 
@@ -22,16 +28,44 @@ const FormSchema = z.object({
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 
+export type State = {
+  errors?: {
+    customerId?: string[];
+    amount?: string[];
+    status?: string[];
+  };
+  message?: string | null;
+};
+
 // Extract the data from formData
 // formData is a built-in JS object
 // formData: FormData ensures that the formData parameter is correctly typed as a FormData object
-export async function createInvoice(formData: FormData) {
-    const { customerId, amount, status } = CreateInvoice.parse({
+/* prevState: contains the state passed from the useFormState hook.
+   We won't be using it in the action in this example but it's a required prop. */
+export async function createInvoice(prevState: State, formData: FormData) {
+    // Validate form fields using Zod
+    /* safeParse() will return an object containing either a success or error field. 
+    This will help handle validation more gracefully 
+    without having put this logic inside the try/catch block compared with the previous .parse() used. */
+    const validatedFields = CreateInvoice.safeParse({
         customerId: formData.get('customerId'),
         amount: formData.get('amount'),
         status: formData.get('status'),
     });
 
+    // If form validation fails, return erros early. Otherwise, continue.
+    if (!validatedFields.success) {
+      return {
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: 'Missing Fields. Failed to Create Invoice.',
+        };
+      }
+      // TEST 
+      // Console.log validatedFields and submit an empty form to see the shape of it.
+      // console.log(validatedFields);
+
+    // Prepare data for insertion into the database
+    const { customerId, amount, status } = validatedFields.data;
     // Convert the amount into cents
     const amountInCents = amount * 100; 
     // Create a new date for the invoice's creation date
@@ -59,13 +93,26 @@ export async function createInvoice(formData: FormData) {
 }
 
 // Steps are similar to the createInvoice action 
-export async function updateInvoice(id: string, formData: FormData) {
-    const { customerId, amount, status } = UpdateInvoice.parse({
+// Update action
+export async function updateInvoice(
+  id: string, 
+  prevState: State,
+  formData: FormData,
+) {
+    const validatedFields = UpdateInvoice.safeParse({
       customerId: formData.get('customerId'),
       amount: formData.get('amount'),
       status: formData.get('status'),
     });
-   
+
+    if (!validatedFields.success) {
+      return {
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: "Missing Fields. Failed to update invoice.",
+      };
+    }
+
+    const { customerId, amount, status } = validatedFields.data;
     const amountInCents = amount * 100;
    
     try {
@@ -82,6 +129,7 @@ export async function updateInvoice(id: string, formData: FormData) {
     redirect('/dashboard/invoices');
   }
 
+  // Delete action
   export async function deleteInvoice(id: string) {
     // TEST: Throw an error when an invoice is deleted.
     // throw new Error('Failed to Delete Invoice');
@@ -90,7 +138,7 @@ export async function updateInvoice(id: string, formData: FormData) {
       await sql`DELETE FROM invoices WHERE id = ${id}`;
       revalidatePath('/dashboard/invoices');
       return { message: 'Deleted Invoice.'};
-    } catch (errror) {
+    } catch (error) {
       return { message: 'Database Error: Failed to Delete Invoice.'};
     }
   }
