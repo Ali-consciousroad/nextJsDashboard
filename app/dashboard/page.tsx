@@ -10,6 +10,11 @@ import {
     RevenueChartSkeleton,
     CardsSkeleton,
    } from '@/app/ui/skeletons';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Dashboard',
+  };
  
 // Page is an async component, this allows to use await to fetch data
 export default async function Page() {

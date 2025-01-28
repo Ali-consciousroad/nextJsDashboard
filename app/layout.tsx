@@ -1,7 +1,7 @@
 // Shared root layout (required)
 import '@/app/ui/global.css';
 import { inter } from '@/app/ui/fonts';
-// Any metadata in layout.js will be inherited by all papges that use it.
+// Any metadata in layout.js will be inherited by all pages that use it.
 // Next.js will automatically add the title and metadata to your application.
 import { Metadata } from 'next';
 

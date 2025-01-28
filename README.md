@@ -18,3 +18,7 @@ Install the project package:
 
 pnpm i
 
+Test credentials:
+
+Email: user@nextmail.com
+Password: 123456
