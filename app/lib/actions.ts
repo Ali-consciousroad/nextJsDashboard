@@ -62,7 +62,7 @@ export type State = {
 // Extract the data from formData
 // formData is a built-in JS object
 // formData: FormData ensures that the formData parameter is correctly typed as a FormData object
-/* prevState: contains the state passed from the useFormState hook.
+/* prevState: contains the state passed from the useActionState hook.
    We won't be using it in the action in this example but it's a required prop. */
 export async function createInvoice(prevState: State, formData: FormData) {
     // Validate form fields using Zod
