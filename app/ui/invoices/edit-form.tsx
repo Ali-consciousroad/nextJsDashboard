@@ -10,7 +10,7 @@ import {
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 import { updateInvoice, State } from '@/app/lib/actions';
-import { useActionState } from 'react-dom';
+import { useFormState } from 'react-dom';
 
 export default function EditInvoiceForm({
   invoice,
@@ -23,7 +23,7 @@ export default function EditInvoiceForm({
   // This will ensure that any value spassed to the Server Action are encoded.
   const initialState: State = { message: null, errors: {} };
   const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
-  const [state, formAction] = useActionState(updateInvoiceWithId, initialState);
+  const [state, formAction] = useFormState(updateInvoiceWithId, initialState);
 
   return (
     <form action={formAction}>
