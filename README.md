@@ -10,13 +10,17 @@ Project deployed using Vercel can be found here: https://nextjs-dashboard-sooty-
 
 The clsx library about conditional styling: https://github.com/lukeed/clsx
 
-Start the app:
-
-pnpm dev
-
 Install the project package:
 
 pnpm i
+
+Seed the database: 
+
+pnpm seed
+
+Start the app:
+
+pnpm dev
 
 Test credentials:
 

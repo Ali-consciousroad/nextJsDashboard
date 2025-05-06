@@ -7,7 +7,7 @@ import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 // Import Zod, a TypeScript-first validation library 
 import { z } from 'zod';
-import { sql } from '@vercel/postgres';
+import pool from '@/app/lib/db';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -96,10 +96,10 @@ export async function createInvoice(prevState: State, formData: FormData) {
     // Add JS's try/catch statements to the Server Actions
     try {
     // Insert the data into the database
-    await sql`
+    await pool.query(`
         INSERT INTO invoices (customer_id, amount, status, date)
-        VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
-        `;
+        VALUES ($1, $2, $3, $4)
+    `, [customerId, amountInCents, status, date]);
     } catch (error) {
       return {
         message: 'Database Error: Failed to Create Invoice.',
@@ -138,11 +138,11 @@ export async function updateInvoice(
     const amountInCents = amount * 100;
    
     try {
-    await sql`
+    await pool.query(`
       UPDATE invoices
-      SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
-      WHERE id = ${id}
-    `;
+      SET customer_id = $1, amount = $2, status = $3
+      WHERE id = $4
+    `, [customerId, amountInCents, status, id]);
     } catch (error) {
       return { message: 'Database Error: Failed to Update Invoice.'};
     }
@@ -157,7 +157,7 @@ export async function updateInvoice(
     // throw new Error('Failed to Delete Invoice');
     // Unreachable code block
     try{
-      await sql`DELETE FROM invoices WHERE id = ${id}`;
+      await pool.query('DELETE FROM invoices WHERE id = $1', [id]);
       revalidatePath('/dashboard/invoices');
       return { message: 'Deleted Invoice.'};
     } catch (error) {

@@ -4,14 +4,14 @@ import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
 // We use zod to validate the email and password before checking if the user exists in the DB.
 import { z } from 'zod';
-import { sql } from '@vercel/postgres';
+import { db } from '@/app/lib/db';
 import type { User } from '@/app/lib/definitions';
 import bcrypt from 'bcryptjs';
 
 async function getUser(email: string): Promise<User | undefined> {
     try {
-        const user = await sql<User>`SELECT * FROM users WHERE email=${email}`;
-        return user.rows[0];
+        const result = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+        return result.rows[0];
     } catch (error) {
         console.error('Failed to fetch user:', error);
         throw new Error('Failed to fetch user.');
