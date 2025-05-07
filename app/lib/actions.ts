@@ -85,17 +85,33 @@ export async function createInvoice(prevState: State, formData: FormData) {
     const date = new Date().toISOString().split('T')[0];
     const id = uuidv4();
 
-    await sql`
+    // First, insert the invoice
+    const result = await sql`
       INSERT INTO invoices (id, customer_id, amount, status, date)
       VALUES (${id}, ${customerId}, ${amountInCents}, ${status}, ${date})
+      RETURNING *
     `;
 
+    if (!result || result.length === 0) {
+      return {
+        message: 'Failed to create invoice.',
+      };
+    }
+
+    // Then revalidate and redirect
     revalidatePath('/dashboard/invoices');
     redirect('/dashboard/invoices');
   } catch (error) {
+    // Check if it's a redirect error
+    if (error instanceof Error && error.message.includes('NEXT_REDIRECT')) {
+      throw error; // Let Next.js handle the redirect
+    }
+    
+    // Handle actual errors
     console.error('Database Error:', error);
-    return {
+    return { 
       message: 'Database Error: Failed to Create Invoice.',
+      error: error instanceof Error ? error.message : 'Unknown error'
     };
   }
 }
