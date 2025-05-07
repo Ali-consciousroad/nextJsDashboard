@@ -32,7 +32,7 @@ describe('Invoice Edit Functionality', () => {
 
   it('should successfully update an invoice', async () => {
     // Mock successful database update
-    (sql as any).mockResolvedValueOnce({ rowCount: 1 });
+    (sql as any).mockResolvedValueOnce([{ id: mockInvoiceId }]);
 
     // Call the update function
     await updateInvoice(mockInvoiceId, mockFormData);
@@ -42,6 +42,16 @@ describe('Invoice Edit Functionality', () => {
     expect(sql).toHaveBeenCalledWith(
       expect.stringContaining('SET customer_id = $1, amount = $2, status = $3')
     );
+  });
+
+  it('should handle non-existent invoice', async () => {
+    // Mock empty result
+    (sql as any).mockResolvedValueOnce([]);
+
+    const result = await updateInvoice(mockInvoiceId, mockFormData);
+
+    // Verify error response
+    expect(result).toHaveProperty('message', 'Invoice not found.');
   });
 
   it('should handle validation errors', async () => {
@@ -70,7 +80,7 @@ describe('Invoice Edit Functionality', () => {
 
   it('should convert amount to cents before saving', async () => {
     // Mock successful database update
-    (sql as any).mockResolvedValueOnce({ rowCount: 1 });
+    (sql as any).mockResolvedValueOnce([{ id: mockInvoiceId }]);
 
     // Call with amount in dollars
     await updateInvoice(mockInvoiceId, mockFormData);

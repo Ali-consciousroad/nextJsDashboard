@@ -8,9 +8,11 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Edit Invoice',
 };
- 
+
 export default async function Page({ params }: { params: { id: string } }) {
-  const id = params.id;
+  // Await the params object before destructuring
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
   
   // Fetch both the invoice and customers in parallel
   const [invoice, customers] = await Promise.all([

@@ -131,7 +131,8 @@ export async function updateInvoice(
       RETURNING *
     `;
 
-    if (result.rowCount === 0) {
+    // Check if any rows were updated
+    if (!result || result.length === 0) {
       return {
         message: 'Invoice not found.',
       };
