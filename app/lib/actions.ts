@@ -123,17 +123,35 @@ export async function updateInvoice(
     const { customerId, amount, status } = validatedFields.data;
     const amountInCents = amount * 100;
 
-    await sql`
+    // Update the invoice
+    const result = await sql`
       UPDATE invoices
       SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
       WHERE id = ${id}::uuid
+      RETURNING *
     `;
 
+    if (result.rowCount === 0) {
+      return {
+        message: 'Invoice not found.',
+      };
+    }
+
+    // Revalidate and redirect
     revalidatePath('/dashboard/invoices');
     redirect('/dashboard/invoices');
   } catch (error) {
+    // Check if it's a redirect error
+    if (error instanceof Error && error.message.includes('NEXT_REDIRECT')) {
+      throw error; // Let Next.js handle the redirect
+    }
+    
+    // Handle actual errors
     console.error('Database Error:', error);
-    return { message: 'Database Error: Failed to Update Invoice.' };
+    return { 
+      message: 'Database Error: Failed to Update Invoice.',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
   }
 }
 

@@ -10,6 +10,8 @@ import {
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 import { updateInvoice } from '@/app/lib/actions';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function EditInvoiceForm({
   invoice,
@@ -18,10 +20,39 @@ export default function EditInvoiceForm({
   invoice: InvoiceForm;
   customers: CustomerField[];
 }) {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+
   return (
     <form action={async (formData) => {
-      await updateInvoice(invoice.id, formData);
+      try {
+        setError(null); // Clear any previous errors
+        const result = await updateInvoice(invoice.id, formData);
+        
+        // If we get a result, it means there was an error
+        if (result?.message) {
+          setError(result.message);
+        }
+        // If no result, the redirect should have happened
+      } catch (error) {
+        // Only handle non-redirect errors
+        if (error instanceof Error && !error.message.includes('NEXT_REDIRECT')) {
+          setError('Failed to update invoice. Please try again.');
+        }
+      }
     }}>
+      {error && (
+        <div className="mb-4 rounded-md bg-red-50 p-4">
+          <div className="flex">
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-800">Error</h3>
+              <div className="mt-2 text-sm text-red-700">
+                <p>{error}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
