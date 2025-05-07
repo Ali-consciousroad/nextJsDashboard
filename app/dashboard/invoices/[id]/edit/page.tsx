@@ -6,32 +6,33 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Edit',
+  title: 'Edit Invoice',
 };
  
-export default async function Page({ params }: { params: { id: string }}) {
-    const id = params.id;
-    // Fetch both the invoice and customers in parallel by using Promise.all
-    const [invoice, customers] = await Promise.all([
-        fetchInvoiceById(id),
-        fetchCustomers(),
-    ]);
+export default async function Page({ params }: { params: { id: string } }) {
+  const id = params.id;
+  
+  // Fetch both the invoice and customers in parallel
+  const [invoice, customers] = await Promise.all([
+    fetchInvoiceById(id),
+    fetchCustomers(),
+  ]);
 
-    if (!invoice) {
-      notFound();
-    }
-    /* The URL should also be updated with an id as follows: 
-    http://localhost:3000/dashboard/invoice/uuid/edit
-    
-    UUIDS is used here instead of auto-incrementing keys for the URL. 
-    This makes the URL longer but eliminate the risk of ID collision. */
-    return (
+  if (!invoice) {
+    notFound();
+  }
+  /* The URL should also be updated with an id as follows: 
+  http://localhost:3000/dashboard/invoice/uuid/edit
+  
+  UUIDS is used here instead of auto-incrementing keys for the URL. 
+  This makes the URL longer but eliminate the risk of ID collision. */
+  return (
     <main>
       <Breadcrumbs
         breadcrumbs={[
           { label: 'Invoices', href: '/dashboard/invoices' },
           {
-            label: 'Edit Invoice',
+            label: `Edit Invoice ${id}`,
             href: `/dashboard/invoices/${id}/edit`,
             active: true,
           },

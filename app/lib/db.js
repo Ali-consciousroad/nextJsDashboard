@@ -1,11 +1,11 @@
 import postgres from 'postgres';
 
 const sql = postgres({
-  host: 'localhost',
-  port: 5432,
-  database: 'nextjs_dashboard',
-  username: 'mcfly',
-  password: '',
+  host: process.env.POSTGRES_HOST,
+  port: process.env.POSTGRES_PORT,
+  database: process.env.POSTGRES_DATABASE,
+  username: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
   ssl: false,
 });
 

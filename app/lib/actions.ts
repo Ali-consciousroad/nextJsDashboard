@@ -103,8 +103,7 @@ export async function createInvoice(prevState: State, formData: FormData) {
 // Steps are similar to the createInvoice action 
 // Update action
 export async function updateInvoice(
-  id: string, 
-  prevState: State,
+  id: string,
   formData: FormData,
 ) {
   try {

@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { sql } from '@/app/lib/db';
 import bcrypt from 'bcryptjs';
 
-async function getUser(email) {
+async function getUser(email: string) {
   try {
     const result = await sql`SELECT * FROM users WHERE email = ${email}`;
     return result[0] || null;
@@ -26,7 +26,10 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
       if (isOnDashboard) {
-        return isLoggedIn;
+        if (isLoggedIn) return true;
+        return false;
+      } else if (isLoggedIn) {
+        return Response.redirect(new URL('/dashboard', nextUrl));
       }
       return true;
     },
