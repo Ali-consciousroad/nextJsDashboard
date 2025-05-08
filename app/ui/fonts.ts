@@ -5,6 +5,8 @@ import localFont from 'next/font/local';
 export const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'arial'],
   variable: '--font-inter',
 });
 
@@ -22,5 +24,7 @@ export const lusitana = localFont({
       style: 'normal',
     },
   ],
+  preload: true,
+  fallback: ['Georgia', 'serif'],
   variable: '--font-lusitana',
 });
