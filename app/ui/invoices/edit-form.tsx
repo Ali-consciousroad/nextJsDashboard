@@ -22,22 +22,28 @@ export default function EditInvoiceForm({
 }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
     <form action={async (formData) => {
       try {
         setError(null); // Clear any previous errors
+        setIsSubmitting(true);
+        
         const result = await updateInvoice(invoice.id, formData);
         
         // If we get a result, it means there was an error
         if (result?.message) {
           setError(result.message);
+          setIsSubmitting(false);
+          return; // Prevent redirect on error
         }
         // If no result, the redirect should have happened
       } catch (error) {
         // Only handle non-redirect errors
         if (error instanceof Error && !error.message.includes('NEXT_REDIRECT')) {
           setError('Failed to update invoice. Please try again.');
+          setIsSubmitting(false);
         }
       }
     }}>
@@ -154,7 +160,9 @@ export default function EditInvoiceForm({
         >
           Cancel
         </Link>
-        <Button type="submit">Edit Invoice</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Updating...' : 'Edit Invoice'}
+        </Button>
       </div>
     </form>
   );

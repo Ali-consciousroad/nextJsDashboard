@@ -150,9 +150,12 @@ export async function fetchInvoiceById(id: string) {
         invoices.amount,
         invoices.status
       FROM invoices
-      WHERE invoices.id = ${id}
+      WHERE invoices.id = ${id}::uuid
     `;
     const invoice = result[0];
+    if (!invoice) {
+      return null;
+    }
     return {
       ...invoice,
       amount: invoice.amount / 100,

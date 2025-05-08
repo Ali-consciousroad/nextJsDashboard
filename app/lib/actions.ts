@@ -123,6 +123,13 @@ export async function updateInvoice(
   formData: FormData,
 ) {
   try {
+    // First validate the ID format
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
+      return {
+        message: 'Invalid invoice ID format.',
+      };
+    }
+
     const validatedFields = UpdateInvoice.safeParse({
       customerId: formData.get('customerId'),
       amount: formData.get('amount'),
@@ -137,7 +144,19 @@ export async function updateInvoice(
     }
 
     const { customerId, amount, status } = validatedFields.data;
-    const amountInCents = amount * 100;
+    // Use a more precise conversion method to avoid floating point issues
+    const amountInCents = Math.round(Number((amount * 100).toFixed(2)));
+
+    // First verify the invoice exists
+    const existingInvoice = await sql`
+      SELECT id FROM invoices WHERE id = ${id}::uuid
+    `;
+
+    if (!existingInvoice || existingInvoice.length === 0) {
+      return {
+        message: 'Invoice not found.',
+      };
+    }
 
     // Update the invoice
     const result = await sql`
@@ -150,7 +169,7 @@ export async function updateInvoice(
     // Check if any rows were updated
     if (!result || result.length === 0) {
       return {
-        message: 'Invoice not found.',
+        message: 'Failed to update invoice.',
       };
     }
 
