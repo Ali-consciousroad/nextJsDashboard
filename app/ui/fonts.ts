@@ -1,18 +1,26 @@
 // Adding a primary font
-import { Inter, Lusitana } from 'next/font/google';
+import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 
 export const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
-  preload: true,
-  fallback: ['system-ui', 'arial'],
+  variable: '--font-inter',
 });
 
 // Adding a secondary font
-export const lusitana = Lusitana({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-  preload: true,
-  fallback: ['Georgia', 'serif'],
+export const lusitana = localFont({
+  src: [
+    {
+      path: '../fonts/Lusitana-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/Lusitana-Bold.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-lusitana',
 });
