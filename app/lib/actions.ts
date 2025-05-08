@@ -85,7 +85,7 @@ export async function createInvoice(prevState: State, formData: FormData) {
     const date = new Date().toISOString().split('T')[0];
     const id = uuidv4();
 
-    // First, insert the invoice
+    // Insert the invoice
     const result = await sql`
       INSERT INTO invoices (id, customer_id, amount, status, date)
       VALUES (${id}, ${customerId}, ${amountInCents}, ${status}, ${date})
