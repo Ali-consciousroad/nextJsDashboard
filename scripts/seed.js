@@ -1,5 +1,5 @@
 /* The script uses SQL to create the tables, adn the data from placeholder-data.ts file to populate them after they've been created. */ 
-const { sql } = require('../app/lib/db');
+const { sql } = require('@vercel/postgres');
 const {
   invoices,
   customers,
@@ -7,6 +7,21 @@ const {
   users,
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcryptjs');
+
+async function deleteAllData() {
+  try {
+    // Delete data from all tables
+    await sql`DELETE FROM revenue`;
+    await sql`DELETE FROM invoices`;
+    await sql`DELETE FROM customers`;
+    await sql`DELETE FROM users`;
+    
+    console.log('All data deleted successfully');
+  } catch (error) {
+    console.error('Error deleting data:', error);
+    throw error;
+  }
+}
 
 async function seedUsers(client) {
   try {
@@ -163,6 +178,10 @@ async function seedRevenue(client) {
 
 async function main() {
   try {
+    // First delete all existing data
+    await deleteAllData();
+    
+    // Then seed new data
     await seedUsers();
     await seedCustomers();
     await seedInvoices();

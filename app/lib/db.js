@@ -7,7 +7,9 @@ const sql = postgres({
   database: process.env.POSTGRES_DATABASE,
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
-  ssl: false,
+  ssl: {
+    rejectUnauthorized: false
+  },
   max: 1, // Use a single connection
   idle_timeout: 20, // Close idle connections after 20 seconds
   connect_timeout: 10, // Connection timeout of 10 seconds
