@@ -9,10 +9,15 @@ export const metadata: Metadata = {
   title: 'Edit Invoice',
 };
 
-export default async function Page({ params }: { params: { id: string } }) {
-  // Await the params object before destructuring
-  const resolvedParams = await params;
-  const id = resolvedParams.id;
+interface PageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function Page({ params }: PageProps) {
+  // Await the params object before using its properties
+  const { id } = await params;
   
   // Fetch both the invoice and customers in parallel
   const [invoice, customers] = await Promise.all([

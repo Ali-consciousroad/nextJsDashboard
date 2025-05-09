@@ -35,10 +35,10 @@ A modern dashboard application built with Next.js 14, featuring authentication, 
 3. **Set up the database**
    - Install PostgreSQL 14
    - Create a database named `nextjs_dashboard`
-   - Create a user `myUser` with appropriate permissions
+   - Create a user with appropriate permissions
    - Update the `.env` file with your database credentials:
      ```
-     POSTGRES_URL="postgres://mcfly@localhost:5432/nextjs_dashboard"
+     POSTGRES_URL="postgres://your_username@localhost:5432/nextjs_dashboard"
      POSTGRES_PASSWORD="your_password"
      ```
 

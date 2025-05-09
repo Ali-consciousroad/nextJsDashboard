@@ -1,0 +1,12 @@
+{
+  "buildCommand": "pnpm build",
+  "installCommand": "pnpm install",
+  "framework": "nextjs",
+  "env": {
+    "POSTGRES_HOST": "@postgres_host",
+    "POSTGRES_PORT": "@postgres_port",
+    "POSTGRES_DATABASE": "@postgres_database",
+    "POSTGRES_USER": "@postgres_user",
+    "POSTGRES_PASSWORD": "@postgres_password"
+  }
+} 
