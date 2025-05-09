@@ -13,16 +13,17 @@ export const inter = Inter({
 export const lusitana = localFont({
   src: [
     {
-      path: '../fonts/Lusitana-Regular.ttf',
+      path: '../fonts/woff2/Lusitana-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../fonts/Lusitana-Bold.ttf',
+      path: '../fonts/woff2/Lusitana-Bold.woff2',
       weight: '700',
       style: 'normal',
     },
   ],
   display: 'swap',
   variable: '--font-lusitana',
+  fallback: ['Georgia', 'serif'],
 });

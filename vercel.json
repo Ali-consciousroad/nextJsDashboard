@@ -8,5 +8,10 @@
     "POSTGRES_DATABASE": "@postgres_database",
     "POSTGRES_USER": "@postgres_user",
     "POSTGRES_PASSWORD": "@postgres_password"
+  },
+  "functions": {
+    "app/api/**/*": {
+      "runtime": "nodejs18.x"
+    }
   }
 } 

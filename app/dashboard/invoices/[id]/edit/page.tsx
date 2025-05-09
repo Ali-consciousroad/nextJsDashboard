@@ -9,15 +9,15 @@ export const metadata: Metadata = {
   title: 'Edit Invoice',
 };
 
-interface PageProps {
-  params: Promise<{
+type PageProps = {
+  params: {
     id: string;
-  }>;
-}
+  };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 export default async function Page({ params }: PageProps) {
-  // Await the params object before using its properties
-  const { id } = await params;
+  const id = params.id;
   
   // Fetch both the invoice and customers in parallel
   const [invoice, customers] = await Promise.all([
