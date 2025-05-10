@@ -143,4 +143,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Next.js](https://nextjs.org/) - The React framework
 - [PostgreSQL](https://www.postgresql.org/) - The database
 - [Tailwind CSS](https://tailwindcss.com/) - The CSS framework
-- [Heroicons](https://heroicons.com/) - The icon set
+- [Heroicons](https://heroicons.com/) - The icon set// Trigger new deployment
