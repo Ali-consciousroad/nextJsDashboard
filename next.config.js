@@ -2,10 +2,18 @@
 const nextConfig = {
   output: 'standalone',
   experimental: {
-    serverActions: {
-      allowedOrigins: ['localhost:3000', 'vercel.app']
-    }
-  }
+    optimizeCss: true,
+    optimizePackageImports: ['@vercel/postgres']
+  },
+  // Enable React strict mode for better development experience
+  reactStrictMode: true,
+  // Optimize images
+  images: {
+    domains: ['localhost'],
+    formats: ['image/avif', 'image/webp'],
+  },
+  // Enable compression
+  compress: true
 }
 
 module.exports = nextConfig 

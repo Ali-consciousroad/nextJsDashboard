@@ -1,6 +1,8 @@
 import { sql } from '@vercel/postgres';
 import { unstable_noStore as noStore } from 'next/cache';
 
+export { sql };
+
 export async function fetchRevenue() {
   noStore();
   try {
