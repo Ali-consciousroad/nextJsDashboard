@@ -1,9 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+  images: {
+    unoptimized: true,
+  },
   experimental: {
     optimizeCss: true,
-    optimizePackageImports: ['@vercel/postgres']
   },
   // Enable React strict mode for better development experience
   reactStrictMode: true,

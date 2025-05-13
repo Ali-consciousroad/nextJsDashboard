@@ -180,7 +180,7 @@ async function main() {
   try {
     // First delete all existing data
     await deleteAllData();
-    
+
     // Then seed new data
     await seedUsers();
     await seedCustomers();
